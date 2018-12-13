@@ -33,11 +33,29 @@ const styles = StyleSheet.create({
 })
 
 export default class TodoInput extends Component {
+  constructor(props) {
+    super(props);
+
+    this.ref = {};
+  }
+
+  onPress = () => {
+    this.props.onPress(this.ref._lastNativeText);
+    this.ref.setNativeProps({ text: '' });
+  }
+
   render() {
+    const {
+      onPress,
+    } = this.props;
+
     return (<View style={styles.container} >
-      <TextInput style={styles.textInput} />
-      <TouchableOpacity style={styles.button} >
-        <Text style={styles.buttonText} > 追加 </Text>
+      <TextInput style={styles.textInput}
+        ref={(ref) => { this.ref = ref; }} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={this.onPress}>
+        <Text style={styles.buttonText}>追加</Text>
       </TouchableOpacity>
     </View>
     )
