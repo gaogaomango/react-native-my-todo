@@ -7,7 +7,13 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, FlatList } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  FlatList
+} from 'react-native';
 import TodoInput from './src/component/TodoInput';
 import TodoItem from './src/component/TodoItem';
 
@@ -26,6 +32,25 @@ export default class App extends Component<Props> {
     this.state = {
       list: [],
     };
+  }
+
+  delete = (index) => () => {
+    const list = [].concat(this.state.list);
+    list.splice(index, 1);
+
+    this.setState({
+      list,
+    });
+  }
+
+  done = (index) => () => {
+    const list = [].concat(this.state.list);
+    list[index].done
+      = !list[index].done;
+
+    this.setState({
+      list,
+    });
   }
 
   onPress = (text) => {
@@ -55,7 +80,13 @@ export default class App extends Component<Props> {
             <FlatList
               style={styles.todoList}
               data={list}
-              renderItem={({ item }) => <TodoItem{...item} />}
+              renderItem={({ item, index }) => (
+                <TodoItem
+                  onDone={this.done(index)}
+                  onDelete={this.delete(index)}
+                  {...item}
+                />
+              )}
             />
           </View>
         </View>
